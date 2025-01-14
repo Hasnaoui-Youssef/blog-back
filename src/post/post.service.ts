@@ -80,8 +80,8 @@ export class PostService {
 
     async updatePost(id : string, updatePostDto : UpdatePostDto) {
         const post = await this.PostModel.findByIdAndUpdate(id, {
-            $set : { updatePostDto }
-        }).exec();
+            $set :  updatePostDto
+        }, {new : true} ).exec();
         return post;
     }
 
