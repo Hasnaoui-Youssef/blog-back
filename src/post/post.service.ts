@@ -37,6 +37,41 @@ export class PostService {
             postsNumber : posts.length,
             };
     }
+    async findAllBySubject(){
+        const posts =  await this.PostModel.aggregate([
+            {
+                $group : {
+                    _id : '$subject',
+                    posts : {
+                        $push : {
+                            _id : '$_id',
+                            author : '$author',
+                            title : '$title'
+                        }
+                    }
+                }
+            },
+            {
+                $project : {
+                    subject: '$_id',
+                    posts : 1,
+                    _id : 0,
+                }
+            }
+        ]);
+        const idk = await Promise.all(posts.map(async (elem) => {
+            const subjectId = elem.subject;
+            const subject = await this.subjectService.getSubjectById(subjectId);
+            return {
+                    posts : elem.posts,
+                    subject : {
+                        name : subject.name,
+                        _id : subjectId,
+                    }
+                }
+        }));
+        return idk;
+    }
 
     async getPostById(id : string){
         const post = await this.PostModel.findById(id);

@@ -12,6 +12,10 @@ export class PostController {
   async createPost(@Body() createPostDto : CreatePostDTO){
     return await this.postService.createPost(createPostDto);
   }
+  @Get("by-name")
+  async getAllBySubject(){
+    return await this.postService.findAllBySubject();
+  }
 
   @Post("comment/:id")
   async createComment(@Param('id') id : string,@Body() createCommentDto : CreateCommentDto){

@@ -28,6 +28,6 @@ export class SubjectController {
 
   @Delete(":name")
   async deleteSubject(@Param('name') name : string){
-    return await this.deleteSubject(name);
+    return await this.subjectService.deleteSubject(name);
   }
 }
